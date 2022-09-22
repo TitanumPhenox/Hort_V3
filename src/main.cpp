@@ -1,5 +1,78 @@
 #include "main.h"
+const int num_of_pages = 7;
+void disable_all_tasks()
+{
+    drive_pid.suspend();
+}
+int current_page = 0;
+void auto_select(bool is_auton)
+{
+    for (int i = 0; i < 7; i++)
+        pros::lcd::clear_line(i);
 
+    pros::lcd::set_text(0, "Page " + std::to_string(current_page + 1));
+
+    switch (current_page)
+    {
+        case 0: // Auto 1
+            pros::lcd::set_text(2, "Claw Auton");
+            if (is_auton)
+                tilter_auton(); // solo_awp();
+            break;
+        case 1: // Auto 2
+            pros::lcd::set_text(2, "Biggiecheese Auton");
+            if (is_auton)
+                // auto_3();
+                break;
+        case 2: // Auto 3
+            pros::lcd::set_text(2, "Skills auton");
+            if (is_auton)
+                skills_auton();
+            break;
+        case 3:
+            pros::lcd::set_text(2, "Neutral auton:");
+            pros::lcd::set_text(2, "Goes forward and picks up");
+            pros::lcd::set_text(2, "the neutral goal");
+            if (is_auton)
+                neutral_auton();
+            break;
+        case 4:
+            pros::lcd::set_text(2, "Win Point Auton");
+            if (is_auton)
+                win_point();
+            break;
+        case 5:
+            pros::lcd::set_text(2, "Line Auton");
+            if (is_auton)
+                line_auton();
+            break;
+        case 6:
+            pros::lcd::set_text(2, "New Mexico");
+            if (is_auton)
+                new_mexico();
+            break;
+        default:
+            break;
+
+    }
+}
+
+void page_up()
+{
+    if (current_page == num_of_pages - 1)
+        current_page = 0;
+    else
+        current_page++;
+    auto_select(false);
+}
+void page_down()
+{
+    if (current_page == 0)
+        current_page = num_of_pages - 1;
+    else
+        current_page--;
+    auto_select(false);
+}
 /**
  * A callback function for LLEMU's center button.
  *
@@ -23,10 +96,15 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	pros::lcd::initialize();
-	pros::lcd::set_text(1, "Hello PROS User!");
 
-	pros::lcd::register_btn1_cb(on_center_button);
+    disable_all_tasks();
+
+    pros::lcd::initialize();
+    auto_select(false);
+    pros::lcd::register_btn0_cb(page_down);
+    pros::lcd::register_btn2_cb(page_up);
+
+
 }
 
 /**
