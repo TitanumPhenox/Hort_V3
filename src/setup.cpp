@@ -21,7 +21,7 @@ void side_drive(){
 
 }
 void drive_control() {
-    while (master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y))
+    while (master.get_analog(ANALOG_LEFT_Y))
         forward_drive();
         pros::delay(2);
     if (master.get_analog(ANALOG_LEFT_X))
