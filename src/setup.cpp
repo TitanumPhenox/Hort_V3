@@ -6,15 +6,29 @@
 #include "../include/setup.h"
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 
-void drive_control() {
-    int left = master.get_analog(ANALOG_LEFT_X);
-    int right = master.get_analog(ANALOG_LEFT_Y);
+void forward_drive(){
+    left_mtr.move(1000);
+    left2_mtr.move(1000);
+    right_mtr.move(1000);
+    right2_mtr.move(1000);
 
-    left_mtr = left;
-    left2_mtr = left;
-    right_mtr = right;
-    right2_mtr = right;
-    pros::delay(20);
+}
+void side_drive(){
+    left_mtr.move(1000);
+    left2_mtr.move(1000);
+    right_mtr.move(-1000);
+    right2_mtr.move(-1000);
+
+}
+void drive_control() {
+    while (master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y))
+        forward_drive();
+        pros::delay(2);
+    if (master.get_analog(ANALOG_LEFT_X))
+        side_drive();
+    pros::delay(2);
+
+
 }
 
 void second_drive_control() {
