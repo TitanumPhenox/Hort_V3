@@ -18,8 +18,8 @@ void side_drive(){
     left2_mtr.move(1000);
     right_mtr.move(-1000);
     right2_mtr.move(-1000);
-
 }
+
 void drive_control() {
     while (master.get_analog(ANALOG_LEFT_Y))
         forward_drive();
@@ -27,8 +27,6 @@ void drive_control() {
     if (master.get_analog(ANALOG_LEFT_X))
         side_drive();
     pros::delay(2);
-
-
 }
 
 void second_drive_control() {
